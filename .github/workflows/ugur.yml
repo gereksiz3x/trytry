@@ -1,49 +1,51 @@
-name: 🚀 Umitmod IPTV Güncelleyici
+name: 🚀 Umitmod IPTV Güncelleyici (Debug)
+
 on:
-  schedule:
-    - cron: "0 */3 * * *"  # Her 3 saatte bir (CRON syntax)
-  workflow_dispatch:       # Manuel tetikleme
+  workflow_dispatch:
 
 jobs:
-  build-and-update:
+  debug-run:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Push işlemi için izin
+      contents: write
 
     steps:
-      - name: 🛠️ Repoyu Klonla
+      - name: 🛠️ Repoyu Klonla (Debug)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Tüm commit geçmişi
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 🐍 Python Kurulumu
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"  # Sabit versiyon önerilir
+          python-version: "3.10"
 
       - name: 📦 Bağımlılıkları Kur
         run: |
-          pip install httpx==0.27.0  # Versiyon sabitleme
-          pip install requests  # Opsiyonel
+          pip install httpx==0.27.0 requests
+          pip freeze > requirements.txt
 
-      - name: 🏃‍♂️ Scripti Çalıştır
+      - name: 🐛 Debug Info
         run: |
+          echo "### ORTAM BİLGİLERİ ###"
+          python --version
+          echo "---"
+          ls -la
+          echo "---"
+          cat ugur.py | head -n 20
+
+      - name: 🏃‍♂️ Scripti Çalıştır (Debug)
+        run: |
+          python -c "import httpx; print('httpx version:', httpx.__version__)"
           python ugur.py || exit 1
         env:
-          DISABLE_SSL_VERIFY: "True"  # SSL hatası için
+          DISABLE_SSL_VERIFY: "True"
 
-      - name: 🔍 Çıktıyı Kontrol Et
-        run: |
-          if [ ! -f "Umitmod.m3u" ]; then
-            echo "❌ Hata: M3U dosyası oluşmadı!"
-            exit 1
-          fi
-          echo "✔️ Dosya başarıyla oluşturuldu."
-
-      - name: 📌 Değişiklikleri GitHub'a Gönder
+      - name: 📌 Değişiklikleri Gönder
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add Umitmod.m3u
-          git commit -m "🔧 Otomatik güncelleme: $(date '+%d.%m.%Y %H:%M')" || echo "🔄 Değişiklik yok."
+          git add .
+          git commit -m "Debug: $(date '+%Y-%m-%d %H:%M:%S')" || echo "No changes"
           git push
