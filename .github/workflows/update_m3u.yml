@@ -10,12 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     
     permissions:
-      contents: write  # Commit/push için gerekli
+      contents: write  # Commit/push için gerekli izin
     
     steps:
     - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0  # Tüm commit geçmişini al
     
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -24,19 +22,20 @@ jobs:
     
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
         pip install beautifulsoup4 requests
         
-    - name: Run scraper
-      id: scrape
+    - name: Run scraper and create M3U
       run: |
         python scrape_solh_tv.py
-        echo "SCRAPE_DATE=$(date)" >> $GITHUB_OUTPUT
+        cat solh-tv.m3u  # İçeriği loglarda görüntüle
         
-    - name: Commit and push if changed
-      if: success()
+    - name: Commit changes
+      if: always()
       run: |
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
         git add solh-tv.m3u
-        git diff --cached --quiet || (git commit -m "Auto-update M3U file [skip ci]" && git push)
+        git commit -m "Auto-update M3U" || echo "No changes to commit"
+        
+    - name: Push changes
+      run: git push
