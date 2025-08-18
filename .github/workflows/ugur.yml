@@ -1,34 +1,49 @@
-name: ugur IPTV Otomatik
-
+name: 🚀 Umitmod IPTV Güncelleyici
 on:
   schedule:
-    - cron: "0 */3 * * *" # Her 3 saatte bir
-  workflow_dispatch: # Manuel çalıştırma
+    - cron: "0 */3 * * *"  # Her 3 saatte bir (CRON syntax)
+  workflow_dispatch:       # Manuel tetikleme
 
 jobs:
-  run-umitmod:
+  build-and-update:
     runs-on: ubuntu-latest
-    steps:
-      - name: Repo'yu Klonla
-        uses: actions/checkout@v4
+    permissions:
+      contents: write  # Push işlemi için izin
 
-      - name: Python Kur
+    steps:
+      - name: 🛠️ Repoyu Klonla
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Tüm commit geçmişi
+
+      - name: 🐍 Python Kurulumu
         uses: actions/setup-python@v5
         with:
-          python-version: "3.x"
+          python-version: "3.10"  # Sabit versiyon önerilir
 
-      - name: Bağımlılıkları Kur
+      - name: 📦 Bağımlılıkları Kur
         run: |
-          pip install requests
+          pip install httpx==0.27.0  # Versiyon sabitleme
+          pip install requests  # Opsiyonel
 
-      - name: ugur Script Çalıştır
+      - name: 🏃‍♂️ Scripti Çalıştır
         run: |
-          python ugur.py
+          python ugur.py || exit 1
+        env:
+          DISABLE_SSL_VERIFY: "True"  # SSL hatası için
 
-      - name: Playlist'i Commit Et
+      - name: 🔍 Çıktıyı Kontrol Et
+        run: |
+          if [ ! -f "Umitmod.m3u" ]; then
+            echo "❌ Hata: M3U dosyası oluşmadı!"
+            exit 1
+          fi
+          echo "✔️ Dosya başarıyla oluşturuldu."
+
+      - name: 📌 Değişiklikleri GitHub'a Gönder
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add playlist.m3u
-          git commit -m "Otomatik güncelleme: $(date '+%Y-%m-%d %H:%M:%S')" || echo "Değişiklik yok"
+          git add Umitmod.m3u
+          git commit -m "🔧 Otomatik güncelleme: $(date '+%d.%m.%Y %H:%M')" || echo "🔄 Değişiklik yok."
           git push
