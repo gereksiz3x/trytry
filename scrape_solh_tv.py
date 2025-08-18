@@ -65,3 +65,13 @@ def generate_m3u():
 if __name__ == "__main__":
     if not generate_m3u():
         exit(1)
+
+# scrape_solh_tv.py sonunda bu kontrolü ekleyin
+if __name__ == "__main__":
+    if create_m3u():
+        print("M3U dosyası başarıyla oluşturuldu")
+        with open('solh-tv.m3u', 'r') as f:
+            print(f.read())
+    else:
+        print("M3U oluşturma başarısız")
+        exit(1)
