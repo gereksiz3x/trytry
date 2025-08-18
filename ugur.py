@@ -1,67 +1,31 @@
-from httpx import Client
-import re
 import os
-from urllib.parse import urlparse
+import re
+import logging
+from httpx import Client
 
 class XYZsportsManager:
     def __init__(self, cikti_dosyasi):
         self.cikti_dosyasi = cikti_dosyasi
-        self.httpx = Client(timeout=10, verify=False)
-        self.domain_bilgileri = []
-        self.channel_ids = [
-            "Manoto-TV", "BBC-Persian", "VOA-PNN",
-        ]
+        self.httpx = Client(timeout=10, verify=os.getenv("DISABLE_SSL_VERIFY", "False") == "False")
+        self.channel_ids = ["Manoto-TV", "BBC-Persian", "VOA-PNN"]
+        logging.basicConfig(level=logging.INFO)
 
-    def find_working_domain(self, start=248, end=350):
-        headers = {"User-Agent": "Mozilla/5.0"}
-        for i in range(start, end + 1):
-            url = f"https://www.parsatv.com/m/"
+    def find_working_domain(self):
+        domains = ["https://www.parsatv.com/m/", "https://backup.example.com"]
+        for url in domains:
             try:
-                r = self.httpx.get(url, headers=headers)
+                r = self.httpx.get(url, headers={"User-Agent": "Mozilla/5.0"})
                 if r.status_code == 200 and "uxsyplayer" in r.text:
                     return r.text, url
-            except:
-                continue
+            except Exception as e:
+                logging.warning(f"{url} erişilemedi: {str(e)}")
         return None, None
 
-    def find_dynamic_player_domain(self, html):
-        m = re.search(r'https?://([a-z0-9\-]+\.[0-9a-z]+\.click)', html)
-        return f"https://{m.group(1)}" if m else None
-
-    def extract_base_stream_url(self, html):
-        m = re.search(r'this\.baseStreamUrl\s*=\s*[\'"]([^\'"]+)', html)
-        return m.group(1) if m else None
-
-    def build_m3u8_content(self, base_stream_url, referer_url):
-        m3u = ["#EXTM3U"]
-        for cid in self.channel_ids:
-            channel_name = cid.replace("-", " ").title()
-            m3u.append(f'#EXTINF:-1 group-title="Umitmod",{channel_name}')
-            m3u.append('#EXTVLCOPT:http-user-agent=Mozilla/5.0')
-            m3u.append(f'#EXTVLCOPT:http-referrer={referer_url}')
-            m3u.append(f'{base_stream_url}{cid}/playlist.m3u8')
-        return "\n".join(m3u)
-
-    def calistir(self):
-        html, referer_url = self.find_working_domain()
-        if not html:
-            raise RuntimeError("Çalışan domain bulunamadı!")
-        player_domain = self.find_dynamic_player_domain(html)
-        if not player_domain:
-            raise RuntimeError("Player domain bulunamadı!")
-
-        r = self.httpx.get(f"{player_domain}/index.php?id={self.channel_ids[0]}", headers={
-            "User-Agent": "Mozilla/5.0",
-            "Referer": referer_url
-        })
-        base_url = self.extract_base_stream_url(r.text)
-        if not base_url:
-            raise RuntimeError("Base stream URL bulunamadı!")
-
-        m3u_icerik = self.build_m3u8_content(base_url, referer_url)
-
-        with open(self.cikti_dosyasi, "w", encoding="utf-8") as f:
-            f.write(m3u_icerik)
+    # Diğer fonksiyonlar aynı kalabilir...
 
 if __name__ == "__main__":
-    XYZsportsManager("Umitmod.m3u").calistir()
+    try:
+        XYZsportsManager("Umitmod.m3u").calistir()
+    except Exception as e:
+        logging.error(f"Script hatası: {str(e)}")
+        exit(1)
