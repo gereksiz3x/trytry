@@ -1,1 +1,81 @@
 #EXTM3U
+#EXTINF:-1 tvg-id="TRT1.tr" tvg-name="TRT 1 HD",TRT 1 HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player/index.php?id=5
+#EXTINF:-1 tvg-id="ShowTV.tr" tvg-name="Show TV HD",Show TV HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=0&amp;tur=0&amp;ref=0&amp;onay=1
+#EXTINF:-1 tvg-id="StarTV.tr" tvg-name="Star TV HD",Star TV HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player/index.php?id=99
+#EXTINF:-1 tvg-id="TRTHaber.tr" tvg-name="TRT Haber HD",TRT Haber HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player1/index.php?id=19
+#EXTINF:-1 tvg-id="ATV.tr" tvg-name="ATV HD",ATV HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=0&amp;tur=0&amp;ref=0&amp;onay=1
+#EXTINF:-1 tvg-id="FOX.tr" tvg-name="FOX HD",FOX HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=13401&amp;tur=1&amp;ref=0&amp;onay=1
+#EXTINF:-1 tvg-id="KanalD.tr" tvg-name="Kanal D HD",Kanal D HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player/index.php?id=2
+#EXTINF:-1 tvg-id="TV8.tr" tvg-name="TV8 HD",TV8 HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=0&amp;tur=0&amp;ref=0&amp;onay=1
+#EXTINF:-1 tvg-id="TRTSpor.tr" tvg-name="TRT Spor HD",TRT Spor HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player/index.php?id=893
+#EXTINF:-1 tvg-id="BeinSports1.tr" tvg-name="beIN Sports HD",beIN Sports HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=0&amp;tur=0&amp;ref=0&amp;onay=1
+#EXTINF:-1 tvg-id="Kanal7.tr" tvg-name="Kanal 7 HD",Kanal 7 HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player1/index.php?id=9
+#EXTINF:-1 tvg-id="TV100.tr" tvg-name="TV100 HD",TV100 HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=0&amp;tur=0&amp;ref=0&amp;onay=1
+#EXTINF:-1 tvg-id="AHaber.tr" tvg-name="A Haber HD",A Haber HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.youtube.com/embed/nmY9i63t6qo?rel=0&showinfo=0&autoplay=1&enablejsapi=1
+#EXTINF:-1 tvg-id="ANews.tr" tvg-name="A News HD",A News HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.youtube.com/embed/L4O-IO_dySQ?rel=0&showinfo=0&autoplay=1&enablejsapi=1
+#EXTINF:-1 tvg-id="CNNTurk.tr" tvg-name="CNN Türk HD",CNN Türk HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=11222&amp;tur=1&amp;ref=0&amp;onay=1
+#EXTINF:-1 tvg-id="NTV.tr" tvg-name="NTV HD",NTV HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player/index.php?id=6
+#EXTINF:-1 tvg-id="Haberturk.tr" tvg-name="Habertürk HD",Habertürk HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player1/index.php?id=894
+#EXTINF:-1 tvg-id="TLC.tr" tvg-name="TLC HD",TLC HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/player/index.php?id=11219
+#EXTINF:-1 tvg-id="TV85.tr" tvg-name="TV8.5 HD",TV8.5 HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=0&amp;tur=0&amp;ref=0&amp;onay=1
+#EXTINF:-1 tvg-id="BloombergHT.tr" tvg-name="Bloomberg HT HD",Bloomberg HT HD
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+#EXTVLCOPT:http-referrer=https://www.canlitv.top
+https://www.canlitv.top/online/online.php?sayfa=0&amp;tur=0&amp;ref=0&amp;onay=1
