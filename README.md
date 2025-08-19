@@ -1,15 +1,19 @@
-# Solh TV M3U Generator
+# TRT TV Kanalları M3U Playlist Oluşturucu
 
-This repository automatically extracts the Solh TV stream URL and generates an M3U playlist file.
+Bu proje, canlitv.top sitesindeki TRT ve diğer Türk TV kanallarının yayınlarını otomatik olarak çekip m3u formatında bir playlist oluşturan bir Python scriptidir.
 
-## Usage
+## Özellikler
 
-The M3U file is automatically updated every 6 hours. You can access the latest version at:
+- TRT 1, Show TV, Star TV ve diğer popüler Türk kanallarını destekler
+- Otomatik olarak güncel yayın URL'lerini çeker
+- M3U formatında playlist oluşturur
+- GitHub Actions ile günlük otomatik güncelleme
 
-[https://raw.githubusercontent.com/your-username/solh-tv-m3u-generator/main/solh-tv.m3u](https://raw.githubusercontent.com/your-username/solh-tv-m3u-generator/main/solh-tv.m3u)
+## Kullanım
 
-(Replace `your-username` with your actual GitHub username)
+### Yerel Kurulum
 
-## Manual Update
-
-You can manually trigger an update by clicking on "Actions" in the GitHub repository and running the workflow manually.
+1. Depoyu klonlayın:
+   ```bash
+   git clone https://github.com/[kullanici-adiniz]/[repo-adiniz].git
+   cd [repo-adiniz]
