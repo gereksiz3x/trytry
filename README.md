@@ -1,19 +1,19 @@
-# TRT TV Kanalları M3U Playlist Oluşturucu
+# DengeTV IPTV Playlist Oluşturucu
 
-Bu proje, canlitv.top sitesindeki TRT ve diğer Türk TV kanallarının yayınlarını otomatik olarak çekip m3u formatında bir playlist oluşturan bir Python scriptidir.
+Bu proje, DengeTV'nin yayın akışlarını otomatik olarak M3U formatında playlist oluşturan bir Python scripti ve GitHub Actions workflow'unu içerir.
 
 ## Özellikler
 
-- TRT 1, Show TV, Star TV ve diğer popüler Türk kanallarını destekler
-- Otomatik olarak güncel yayın URL'lerini çeker
-- M3U formatında playlist oluşturur
-- GitHub Actions ile günlük otomatik güncelleme
+- 🤖 Otomatik playlist güncelleme (her 3 saatte bir)
+- 🎯 DengeTV kanallarını destekler
+- 📝 M3U formatında çıktı
+- 🔧 Manuel çalıştırma desteği
+- ✅ Aktif kanal testi ve doğrulama
 
 ## Kullanım
 
-### Yerel Kurulum
+### Yerel Çalıştırma
 
-1. Depoyu klonlayın:
-   ```bash
-   git clone https://github.com/[kullanici-adiniz]/[repo-adiniz].git
-   cd [repo-adiniz]
+1. Gereksinimleri yükleyin:
+```bash
+pip install -r requirements.txt
