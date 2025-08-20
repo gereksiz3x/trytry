@@ -1,0 +1,121 @@
+#EXTM3U
+#EXTINF:-1 tvg-id="BEINSPORTS1" tvg-name="BEIN SPORTS 1" tvg-logo="",BEIN SPORTS 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin1.m3u8
+#EXTINF:-1 tvg-id="BEINSPORTS2" tvg-name="BEIN SPORTS 2" tvg-logo="",BEIN SPORTS 2
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin2.m3u8
+#EXTINF:-1 tvg-id="BEINSPORTS3" tvg-name="BEIN SPORTS 3" tvg-logo="",BEIN SPORTS 3
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin3.m3u8
+#EXTINF:-1 tvg-id="BEINSPORTS4" tvg-name="BEIN SPORTS 4" tvg-logo="",BEIN SPORTS 4
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin4.m3u8
+#EXTINF:-1 tvg-id="BEINSPORTS5" tvg-name="BEIN SPORTS 5" tvg-logo="",BEIN SPORTS 5
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin5.m3u8
+#EXTINF:-1 tvg-id="BEINSPORTSMAX1" tvg-name="BEIN SPORTS MAX 1" tvg-logo="",BEIN SPORTS MAX 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin6.m3u8
+#EXTINF:-1 tvg-id="BEINSPORTSMAX2" tvg-name="BEIN SPORTS MAX 2" tvg-logo="",BEIN SPORTS MAX 2
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin7.m3u8
+#EXTINF:-1 tvg-id="SSPORT1" tvg-name="S-SPORT 1" tvg-logo="",S-SPORT 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin8.m3u8
+#EXTINF:-1 tvg-id="SSPORT2" tvg-name="S-SPORT 2" tvg-logo="",S-SPORT 2
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin9.m3u8
+#EXTINF:-1 tvg-id="SSPORT+" tvg-name="S-SPORT +" tvg-logo="",S-SPORT +
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin10.m3u8
+#EXTINF:-1 tvg-id="TIVIBUSPOR1" tvg-name="TIVIBU SPOR 1" tvg-logo="",TIVIBU SPOR 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin11.m3u8
+#EXTINF:-1 tvg-id="TIVIBUSPOR2" tvg-name="TIVIBU SPOR 2" tvg-logo="",TIVIBU SPOR 2
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin12.m3u8
+#EXTINF:-1 tvg-id="TIVIBUSPOR3" tvg-name="TIVIBU SPOR 3" tvg-logo="",TIVIBU SPOR 3
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin13.m3u8
+#EXTINF:-1 tvg-id="SMARTSPOR1" tvg-name="SMART SPOR 1" tvg-logo="",SMART SPOR 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin14.m3u8
+#EXTINF:-1 tvg-id="SMARTSPOR2" tvg-name="SMART SPOR 2" tvg-logo="",SMART SPOR 2
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin15.m3u8
+#EXTINF:-1 tvg-id="TRTSPOR" tvg-name="TRT SPOR" tvg-logo="",TRT SPOR
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin16.m3u8
+#EXTINF:-1 tvg-id="TRTSPORYILDIZ" tvg-name="TRT SPOR YILDIZ" tvg-logo="",TRT SPOR YILDIZ
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin17.m3u8
+#EXTINF:-1 tvg-id="ASPOR" tvg-name="A SPOR" tvg-logo="",A SPOR
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin18.m3u8
+#EXTINF:-1 tvg-id="ATV" tvg-name="ATV" tvg-logo="",ATV
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin19.m3u8
+#EXTINF:-1 tvg-id="TV8" tvg-name="TV8" tvg-logo="",TV8
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin20.m3u8
+#EXTINF:-1 tvg-id="TV85" tvg-name="TV8.5" tvg-logo="",TV8.5
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin21.m3u8
+#EXTINF:-1 tvg-id="NBATV" tvg-name="NBA TV" tvg-logo="",NBA TV
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin22.m3u8
+#EXTINF:-1 tvg-id="EXXENSPOR1" tvg-name="EXXEN SPOR 1" tvg-logo="",EXXEN SPOR 1
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin23.m3u8
+#EXTINF:-1 tvg-id="EXXENSPOR2" tvg-name="EXXEN SPOR 2" tvg-logo="",EXXEN SPOR 2
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin24.m3u8
+#EXTINF:-1 tvg-id="EXXENSPOR3" tvg-name="EXXEN SPOR 3" tvg-logo="",EXXEN SPOR 3
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin25.m3u8
+#EXTINF:-1 tvg-id="EXXENSPOR4" tvg-name="EXXEN SPOR 4" tvg-logo="",EXXEN SPOR 4
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin26.m3u8
+#EXTINF:-1 tvg-id="EXXENSPOR5" tvg-name="EXXEN SPOR 5" tvg-logo="",EXXEN SPOR 5
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin27.m3u8
+#EXTINF:-1 tvg-id="EXXENSPOR6" tvg-name="EXXEN SPOR 6" tvg-logo="",EXXEN SPOR 6
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin28.m3u8
+#EXTINF:-1 tvg-id="EXXENSPOR7" tvg-name="EXXEN SPOR 7" tvg-logo="",EXXEN SPOR 7
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin29.m3u8
+#EXTINF:-1 tvg-id="EXXENSPOR8" tvg-name="EXXEN SPOR 8" tvg-logo="",EXXEN SPOR 8
+#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36
+#EXTVLCOPT:http-referrer=https://dengetv54.live/
+https://dengetv54.live/yayin30.m3u8
