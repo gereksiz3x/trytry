@@ -1,0 +1,197 @@
+import requests
+from bs4 import BeautifulSoup
+import re
+import json
+from datetime import datetime
+import time
+
+class SSCScraper:
+    def __init__(self):
+        self.base_url = "https://www.elahmad.com/tv/ssc-sport-live.php"
+        self.session = requests.Session()
+        self.session.headers.update({
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        })
+    
+    def extract_m3u8_links(self, html_content):
+        """HTML içinden m3u8 linklerini çıkar"""
+        patterns = [
+            r'https?://[^\s"\']+\.m3u8',
+            r'https?://[^\s"\']+\.m3u8?\?[^\s"\']*',
+            r'src=["\'](https?://[^\s"\']+\.m3u8[^\s"\']*)["\']',
+            r'file:\s*["\'](https?://[^\s"\']+\.m3u8[^\s"\']*)["\']'
+        ]
+        
+        links = set()
+        for pattern in patterns:
+            found = re.findall(pattern, html_content, re.IGNORECASE)
+            links.update(found)
+        
+        return list(links)
+    
+    def get_channel_links(self):
+        """Tüm kanal linklerini al"""
+        try:
+            response = self.session.get(self.base_url, timeout=30)
+            response.raise_for_status()
+            
+            soup = BeautifulSoup(response.text, 'html.parser')
+            
+            # Kanalları bul
+            channels = []
+            
+            # SSC Sports kanallarını ara
+            channel_patterns = [
+                'ssc sport 1', 'ssc sport 2', 'ssc sport 3', 'ssc sport 4',
+                'ssc sports 1', 'ssc sports 2', 'ssc sports 3', 'ssc sports 4',
+                'ssc 1', 'ssc 2', 'ssc 3', 'ssc 4'
+            ]
+            
+            # Linkleri içeren elementleri ara
+            links = soup.find_all(['a', 'div', 'iframe'], href=True)
+            links.extend(soup.find_all('iframe', src=True))
+            
+            for link in links:
+                href = link.get('href', '') or link.get('src', '')
+                text = link.get_text().lower()
+                
+                # SSC kanalı kontrolü
+                is_ssc_channel = any(pattern in text for pattern in channel_patterns)
+                is_ssc_url = any(pattern in href.lower() for pattern in channel_patterns)
+                
+                if is_ssc_channel or is_ssc_url:
+                    channel_name = text.strip() or f"SSC Channel {len(channels) + 1}"
+                    
+                    # Eğer relative linkse absolute yap
+                    if href.startswith('//'):
+                        href = 'https:' + href
+                    elif href.startswith('/'):
+                        href = 'https://www.elahmad.com' + href
+                    elif not href.startswith('http'):
+                        href = 'https://www.elahmad.com/tv/' + href
+                    
+                    channels.append({
+                        'name': channel_name,
+                        'url': href,
+                        'type': 'direct' if '.m3u8' in href.lower() else 'page'
+                    })
+            
+            return channels
+            
+        except Exception as e:
+            print(f"Error getting channel links: {e}")
+            return []
+    
+    def extract_stream_from_page(self, url):
+        """Sayfadan stream linkini çıkar"""
+        try:
+            response = self.session.get(url, timeout=30)
+            response.raise_for_status()
+            
+            # m3u8 linklerini ara
+            m3u8_links = self.extract_m3u8_links(response.text)
+            
+            if m3u8_links:
+                return m3u8_links[0]  # İlk m3u8 linkini döndür
+            
+            # Iframe içinde stream olabilir
+            soup = BeautifulSoup(response.text, 'html.parser')
+            iframes = soup.find_all('iframe', src=True)
+            
+            for iframe in iframes:
+                iframe_src = iframe['src']
+                if iframe_src and '.m3u8' in iframe_src.lower():
+                    return iframe_src
+                
+                # Iframe içeriğini kontrol et
+                if iframe_src.startswith('//'):
+                    iframe_src = 'https:' + iframe_src
+                elif iframe_src.startswith('/'):
+                    iframe_src = 'https://www.elahmad.com' + iframe_src
+                
+                try:
+                    iframe_response = self.session.get(iframe_src, timeout=20)
+                    iframe_m3u8 = self.extract_m3u8_links(iframe_response.text)
+                    if iframe_m3u8:
+                        return iframe_m3u8[0]
+                except:
+                    continue
+            
+            return None
+            
+        except Exception as e:
+            print(f"Error extracting stream from {url}: {e}")
+            return None
+    
+    def generate_m3u_playlist(self, channels_data):
+        """M3U playlist oluştur"""
+        m3u_content = "#EXTM3U\n"
+        m3u_content += "# Generated by SSC Sports Scraper\n"
+        m3u_content += f"# Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n\n"
+        
+        for channel in channels_data:
+            if channel.get('stream_url'):
+                m3u_content += f"#EXTINF:-1 tvg-id=\"\" tvg-name=\"{channel['name']}\" tvg-logo=\"\" group-title=\"SSC Sports\",{channel['name']}\n"
+                m3u_content += f"{channel['stream_url']}\n\n"
+        
+        return m3u_content
+    
+    def run(self):
+        """Ana çalıştırma metodu"""
+        print("Starting SSC Sports scraper...")
+        
+        # Kanalları al
+        channels = self.get_channel_links()
+        print(f"Found {len(channels)} channels")
+        
+        results = []
+        
+        for i, channel in enumerate(channels, 1):
+            print(f"Processing channel {i}/{len(channels)}: {channel['name']}")
+            
+            if channel['type'] == 'direct' and '.m3u8' in channel['url'].lower():
+                # Direkt m3u8 linki
+                stream_url = channel['url']
+            else:
+                # Sayfadan stream çıkar
+                stream_url = self.extract_stream_from_page(channel['url'])
+                time.sleep(1)  # Rate limiting
+            
+            if stream_url:
+                results.append({
+                    'name': channel['name'],
+                    'stream_url': stream_url,
+                    'source_url': channel['url']
+                })
+                print(f"✓ Found stream: {stream_url}")
+            else:
+                print(f"✗ No stream found for {channel['name']}")
+        
+        # M3U playlist oluştur
+        if results:
+            m3u_content = self.generate_m3u_playlist(results)
+            return m3u_content, results
+        else:
+            return None, []
+
+def main():
+    scraper = SSCScraper()
+    m3u_content, channels = scraper.run()
+    
+    if m3u_content:
+        # M3U dosyasını kaydet
+        with open('ssc_sports.m3u', 'w', encoding='utf-8') as f:
+            f.write(m3u_content)
+        
+        # JSON olarak da kaydet (debug için)
+        with open('channels.json', 'w', encoding='utf-8') as f:
+            json.dump(channels, f, indent=2, ensure_ascii=False)
+        
+        print(f"\nSuccess! Generated playlist with {len(channels)} streams")
+        print("Saved to ssc_sports.m3u and channels.json")
+    else:
+        print("No streams found!")
+        exit(1)
+
+if __name__ == "__main__":
+    main()
