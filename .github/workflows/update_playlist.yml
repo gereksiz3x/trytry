@@ -1,0 +1,46 @@
+name: Update SSC Sports Playlist
+
+on:
+  schedule:
+    # Her gün 08:00'de çalıştır (UTC)
+    - cron: '0 8 * * *'
+  workflow_dispatch: # Manuel çalıştırma için
+  push:
+    branches: [ main ]
+    paths:
+      - '**.py'
+      - '**.yml'
+
+jobs:
+  update-playlist:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Run scraper
+      run: |
+        python update_playlist.py
+
+    - name: Commit and push if changed
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add docs/ssc_sports.m3u docs/index.html
+        git diff --staged --quiet || git commit -m "Auto-update playlist: $(date +'%Y-%m-%d %H:%M')"
+        git push
