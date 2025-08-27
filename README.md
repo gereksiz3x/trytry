@@ -1,19 +1,20 @@
-# DengeTV IPTV Playlist Oluşturucu
+# SSC Sports Stream Scraper
 
-Bu proje, DengeTV'nin yayın akışlarını otomatik olarak M3U formatında playlist oluşturan bir Python scripti ve GitHub Actions workflow'unu içerir.
+Bu bot, elahmad.com sitesindeki SSC Sports kanallarının yayın linklerini otomatik olarak çıkarır ve M3U playlist oluşturur.
 
 ## Özellikler
 
-- 🤖 Otomatik playlist güncelleme (her 3 saatte bir)
-- 🎯 DengeTV kanallarını destekler
-- 📝 M3U formatında çıktı
-- 🔧 Manuel çalıştırma desteği
-- ✅ Aktif kanal testi ve doğrulama
+- SSC Sports 1, SSC Sports 2 ve diğer kanalları otomatik tespit eder
+- M3U8 stream linklerini çıkarır
+- Günlük otomatik güncelleme
+- GitHub Pages üzerinden erişim
 
 ## Kullanım
 
-### Yerel Çalıştırma
+Playlist linki: `https://[kullanici-adi].github.io/[repo-adi]/ssc_sports.m3u`
 
-1. Gereksinimleri yükleyin:
+## Yerel Çalıştırma
+
 ```bash
 pip install -r requirements.txt
+python ssc_scraper.py
