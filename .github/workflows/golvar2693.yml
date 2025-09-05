@@ -1,12 +1,12 @@
-name: Golvar2693 Stream Scanner
+name: Golvar2693 Maç Tarayıcı
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */2 * * *'  # Her 2 saatte bir
+    - cron: '*/30 * * * *'  # Her 30 dakikada bir
 
 jobs:
-  scan-streams:
+  scan-matches:
     runs-on: ubuntu-latest
     
     steps:
@@ -21,20 +21,19 @@ jobs:
     - name: Install dependencies
       run: pip install requests
 
-    - name: Run Stream Scanner
-      run: python stream_scanner.py
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Run Maç Tarayıcı
+      run: python golvar2693.py
+      continue-on-error: true
 
-    - name: Check and commit M3U file
+    - name: Commit M3U file
       run: |
-        if [ -f "golvar2693.m3u" ] && [ $(wc -l < golvar2693.m3u) -gt 3 ]; then
+        if [ -f "golvar2693.m3u" ] && [ $(wc -l < golvar2693.m3u) -gt 10 ]; then
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add golvar2693.m3u
-          git commit -m "🚀 Streamler güncellendi: $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "⚽ Maçlar Güncellendi: $(date +'%Y-%m-%d %H:%M')"
           git push
         else
-          echo "Geçerli M3U dosyası bulunamadı, commit atlanıyor."
+          echo "Yeterli içerik bulunamadı, commit atlanıyor."
           exit 0
         fi
