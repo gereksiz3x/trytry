@@ -3,9 +3,7 @@ name: Golvar2693 Stream Scanner
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *'  # Her 30 dakikada bir
-  push:
-    branches: [ main ]
+    - cron: '0 */2 * * *'  # Her 2 saatte bir
 
 jobs:
   scan-streams:
@@ -23,38 +21,20 @@ jobs:
     - name: Install dependencies
       run: pip install requests
 
-    - name: Create golvar2693.m3u file
-      run: |
-        # Önce basit bir M3U dosyası oluşturalım
-        echo "#EXTM3U" > golvar2693.m3u
-        echo "#EXTINF:-1,Test Stream" >> golvar2693.m3u
-        echo "https://golvar2693.sbs/stream/live.m3u8" >> golvar2693.m3u
+    - name: Run Stream Scanner
+      run: python stream_scanner.py
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Run Golvar2693 Scanner
-      run: python golvar2693_scanner.py
-      continue-on-error: true
-
-    - name: Check if file exists
+    - name: Check and commit M3U file
       run: |
-        if [ -f "golvar2693.m3u" ]; then
-          echo "File exists with $(wc -l < golvar2693.m3u) lines"
+        if [ -f "golvar2693.m3u" ] && [ $(wc -l < golvar2693.m3u) -gt 3 ]; then
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add golvar2693.m3u
+          git commit -m "🚀 Streamler güncellendi: $(date +'%Y-%m-%d %H:%M')"
+          git push
         else
-          echo "File does not exist, creating empty one"
-          echo "#EXTM3U" > golvar2693.m3u
-          echo "# Empty playlist - no streams found" >> golvar2693.m3u
+          echo "Geçerli M3U dosyası bulunamadı, commit atlanıyor."
+          exit 0
         fi
-
-    - name: Commit and push if changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add golvar2693.m3u
-        git diff --staged --quiet || git commit -m "🤖 Stream listesi güncellendi: $(date +'%Y-%m-%d %H:%M')"
-        git push
-
-    - name: Upload playlist artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: golvar2693-playlist
-        path: golvar2693.m3u
-        retention-days: 1
