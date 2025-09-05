@@ -1,14 +1,14 @@
-name: Golvar2693 IPTV Scanner
+name: Golvar2693 Match Scanner
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 */2 * * *'  # Her 2 saatte bir
+    - cron: '*/30 * * * *'  # Her 30 dakikada bir
   push:
     branches: [ main ]
 
 jobs:
-  scan-channels:
+  scan-matches:
     runs-on: ubuntu-latest
     
     steps:
@@ -23,8 +23,9 @@ jobs:
     - name: Install dependencies
       run: pip install requests
 
-    - name: Run Golvar2693 Scanner
+    - name: Run Golvar2693 Match Scanner
       run: python golvar2693_scanner.py
+      continue-on-error: true
 
     - name: Commit and push if changes
       run: |
@@ -32,7 +33,7 @@ jobs:
         git config --local user.name "GitHub Action"
         git add golvar2693.m3u
         if ! git diff --staged --quiet; then
-          git commit -m "🤖 Auto-update: $(date +'%Y-%m-%d %H:%M')"
+          git commit -m "🤖 Maç listesi güncellendi: $(date +'%Y-%m-%d %H:%M')"
           git push
         else
           echo "No changes to commit"
@@ -43,3 +44,4 @@ jobs:
       with:
         name: golvar2693-playlist
         path: golvar2693.m3u
+        retention-days: 1
