@@ -2,7 +2,8 @@ import requests
 import re
 import sys
 import json
-from urllib.parse import urljoin
+from urllib.parse import urljoin, quote
+from datetime import datetime
 
 # ========= RENK TANIMLARI =========
 RESET  = "\033[0m"
@@ -36,103 +37,115 @@ def get_site_content(url):
             'Connection': 'keep-alive',
             'Upgrade-Insecure-Requests': '1',
         }
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, headers=headers, timeout=15)
         response.raise_for_status()
         return response.text
     except Exception as e:
         print_status(f"Siteye erişilemedi: {e}", "error")
         return None
 
-def extract_channels_from_html(html_content, base_url):
-    """HTML içeriğinden kanal bilgilerini çıkar"""
-    channels = []
+def extract_matches_from_html(html_content, base_url):
+    """HTML içeriğinden maç bilgilerini çıkar"""
+    matches = []
     
-    # Maç yayınlarını bul (canlı maçlar)
+    # Maç pattern'leri - daha esnek yapı
     match_patterns = [
-        r'<div[^>]*class="[^"]*match-item[^"]*"[^>]*>.*?<a[^>]*href="([^"]*)"[^>]*>.*?<img[^>]*src="([^"]*)"[^>]*>.*?<div[^>]*class="[^"]*match-title[^"]*"[^>]*>(.*?)</div>',
-        r'data-channel="([^"]+)"[^>]*data-title="([^"]+)"',
-        r'<a[^>]*href="([^"]*channel\.html[^"]*)"[^>]*>.*?<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"',
+        r'<a[^>]*href="([^"]*mac[^"]*)"[^>]*>(.*?)</a>',
+        r'<div[^>]*class="[^"]*match[^"]*"[^>]*>.*?<a[^>]*href="([^"]*)"[^>]*>(.*?)</a>',
+        r'data-url="([^"]*)"[^>]*data-title="([^"]*)"',
+        r'<li[^>]*>.*?<a[^>]*href="([^"]*)"[^>]*>(.*?)</a>.*?</li>',
     ]
     
     for pattern in match_patterns:
-        matches = re.findall(pattern, html_content, re.DOTALL | re.IGNORECASE)
-        for match in matches:
-            if len(match) == 3:
-                channel_url, image_url, title = match
-                if not channel_url.startswith('http'):
-                    channel_url = urljoin(base_url, channel_url)
-                channels.append({
-                    'url': channel_url,
-                    'title': title.strip(),
-                    'type': 'live_match'
-                })
-    
-    # Normal kanalları bul
-    channel_patterns = [
-        r'<a[^>]*href="([^"]*)"[^>]*class="[^"]*channel-link[^"]*"[^>]*>.*?<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"',
-        r'<li[^>]*>.*?<a[^>]*href="([^"]*)"[^>]*>.*?<img[^>]*src="([^"]*)"[^>]*alt="([^"]*)"[^>]*>.*?</a>.*?</li>',
-    ]
-    
-    for pattern in channel_patterns:
-        matches = re.findall(pattern, html_content, re.DOTALL | re.IGNORECASE)
-        for match in matches:
-            if len(match) == 3:
-                channel_url, image_url, title = match
-                if not channel_url.startswith('http'):
-                    channel_url = urljoin(base_url, channel_url)
-                if 'channel' in channel_url.lower():
-                    channels.append({
-                        'url': channel_url,
-                        'title': title.strip(),
-                        'type': 'tv_channel'
+        found_matches = re.findall(pattern, html_content, re.DOTALL | re.IGNORECASE)
+        for match_url, match_title in found_matches:
+            if 'mac' in match_url.lower() and match_title.strip():
+                if not match_url.startswith('http'):
+                    match_url = urljoin(base_url, match_url)
+                
+                # Title temizleme
+                title = re.sub(r'<[^>]*>', '', match_title).strip()
+                if title and len(title) > 5:  # Anlamlı bir başlık olduğundan emin ol
+                    matches.append({
+                        'url': match_url,
+                        'title': title,
+                        'type': 'live_match'
                     })
     
-    return channels
+    return matches
 
-def extract_stream_url(channel_url):
-    """Kanal sayfasından stream URL'sini çıkar"""
+def extract_stream_from_match_page(match_url):
+    """Maç sayfasından stream URL'sini çıkar"""
     try:
-        content = get_site_content(channel_url)
+        content = get_site_content(match_url)
         if not content:
             return None
         
-        # Stream URL pattern'leri
+        # Çeşitli stream URL pattern'leri
         patterns = [
-            r'file\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
-            r'source\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
-            r'src\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+            r'(https?://[^\s"\']+\.m3u8[^\s"\']*)',
+            r'file["\']?\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+            r'source["\']?\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+            r'src["\']?\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
             r'player\.setup\([^)]*file["\']?\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
-            r'hlsUrl\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+            r'hlsUrl["\']?\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+            r'videoUrl["\']?\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
+            r'streamUrl["\']?\s*[:=]\s*["\']([^"\']+\.m3u8[^"\']*)["\']',
         ]
         
         for pattern in patterns:
-            match = re.search(pattern, content, re.IGNORECASE)
-            if match:
-                stream_url = match.group(1)
-                if not stream_url.startswith('http'):
-                    stream_url = urljoin(channel_url, stream_url)
-                return stream_url
+            matches = re.findall(pattern, content, re.IGNORECASE)
+            for stream_url in matches:
+                if stream_url and '.m3u8' in stream_url:
+                    # URL'yi temizle
+                    stream_url = re.sub(r'[\\"\'\)\;]', '', stream_url)
+                    if not stream_url.startswith('http'):
+                        stream_url = urljoin(match_url, stream_url)
+                    return stream_url
         
         return None
         
     except Exception as e:
-        print_status(f"Stream URL çıkarılırken hata: {e}", "error")
+        print_status(f"Stream çıkarılırken hata: {e}", "error")
         return None
 
-def generate_m3u_playlist(channels):
+def get_direct_stream_urls():
+    """Direkt olarak bilinen stream URL'lerini dene"""
+    direct_urls = [
+        "https://golvar2693.sbs/stream/live1.m3u8",
+        "https://golvar2693.sbs/stream/sport1.m3u8",
+        "https://golvar2693.sbs/stream/tv1.m3u8",
+        "https://golvar2693.sbs/live/stream.m3u8",
+        "https://golvar2693.sbs/hls/stream.m3u8",
+    ]
+    
+    for url in direct_urls:
+        try:
+            response = requests.head(url, timeout=5)
+            if response.status_code == 200:
+                return url
+        except:
+            continue
+    
+    return None
+
+def generate_m3u_playlist(matches):
     """M3U playlist oluştur"""
-    if not channels:
+    if not matches:
         return None
     
     lines = ["#EXTM3U"]
     valid_channels = 0
     
-    for idx, channel in enumerate(channels, 1):
-        stream_url = extract_stream_url(channel['url'])
+    for idx, match in enumerate(matches, 1):
+        stream_url = extract_stream_from_match_page(match['url'])
+        
+        if not stream_url:
+            # Alternatif olarak direkt URL'leri dene
+            stream_url = get_direct_stream_urls()
+        
         if stream_url:
-            channel_name = f"Golvar2693 - {channel['title']}"
-            if channel['type'] == 'live_match':
-                channel_name = f"⚽ {channel_name}"
+            channel_name = f"⚽ {match['title']}"
             
             lines.append(f'#EXTINF:-1 tvg-id="" tvg-name="{channel_name}",{channel_name}')
             lines.append(f'#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
@@ -142,14 +155,14 @@ def generate_m3u_playlist(channels):
             print_status(f"{idx:02d}. {channel_name}", "success")
             valid_channels += 1
         else:
-            print_status(f"{idx:02d}. {channel['title']} (Stream bulunamadı)", "warning")
+            print_status(f"{idx:02d}. {match['title']} (Stream bulunamadı)", "warning")
     
     return "\n".join(lines), valid_channels
 
 def main():
     """Ana fonksiyon"""
     print(f"{CYAN}{BOLD}╔══════════════════════════════════════════╗")
-    print(f"║           Golvar2693 IPTV Scanner           ║")
+    print(f"║           Golvar2693 Maç Scanner          ║")
     print(f"╚══════════════════════════════════════════╝{RESET}\n")
     
     base_url = "https://golvar2693.sbs/"
@@ -158,33 +171,72 @@ def main():
     print_status("Ana sayfa yükleniyor...")
     html_content = get_site_content(base_url)
     if not html_content:
-        sys.exit(1)
+        print_status("Alternatif tarama yöntemleri deneniyor...", "warning")
+        # Direkt maç URL'lerini deneyelim
+        html_content = ""
     
-    # Kanalları çıkar
-    print_status("Kanallar taranıyor...")
-    channels = extract_channels_from_html(html_content, base_url)
+    # Maçları çıkar
+    print_status("Maçlar taranıyor...")
+    matches = extract_matches_from_html(html_content, base_url)
     
-    if not channels:
-        print_status("Hiç kanal bulunamadı!", "error")
+    if not matches:
+        print_status("Otomatik maç bulunamadı, manuel URL'ler deneniyor...", "warning")
         
-        # Alternatif: Doğrudan bilinen kanal URL'lerini dene
-        alternative_channels = [
-            {'url': base_url + 'channel.html', 'title': 'Ana Kanal', 'type': 'tv_channel'},
-            {'url': base_url + 'live.html', 'title': 'Canlı Yayın', 'type': 'live_match'},
-            {'url': base_url + 'tv.html', 'title': 'TV Kanalları', 'type': 'tv_channel'},
+        # Manuel olarak bilinen maç URL'lerini oluştur
+        matches = [
+            {
+                'url': base_url + 'mac/letonya-sirbistan-cbc-sport/',
+                'title': 'Letonya - Sırbistan (CBC Sport)',
+                'type': 'live_match'
+            },
+            {
+                'url': base_url + 'mac/live-stream-1/',
+                'title': 'Canlı Maç 1',
+                'type': 'live_match'
+            },
+            {
+                'url': base_url + 'mac/live-stream-2/',
+                'title': 'Canlı Maç 2', 
+                'type': 'live_match'
+            }
         ]
-        
-        channels = alternative_channels
-        print_status("Alternatif kanallar deneniyor...", "warning")
     
-    print_status(f"{len(channels)} kanal bulundu", "success")
+    print_status(f"{len(matches)} maç bulundu", "success")
     
     # M3U playlist oluştur
     print_status("Stream URL'leri çıkarılıyor...")
-    playlist, valid_count = generate_m3u_playlist(channels)
+    playlist, valid_count = generate_m3u_playlist(matches)
     
     if not playlist or valid_count == 0:
-        print_status("Hiçbir kanal için stream bulunamadı!", "error")
+        print_status("Hiçbir maç için stream bulunamadı!", "error")
+        
+        # Son çare: Sabit stream URL'leri
+        print_status("Sabit stream URL'leri deneniyor...", "warning")
+        fixed_streams = [
+            "https://golvar2693.sbs/hls/stream.m3u8",
+            "https://golvar2693.sbs/live/tv.m3u8", 
+            "https://golvar2693.sbs/stream/channel1.m3u8"
+        ]
+        
+        lines = ["#EXTM3U"]
+        valid_count = 0
+        for idx, stream_url in enumerate(fixed_streams, 1):
+            try:
+                response = requests.head(stream_url, timeout=5)
+                if response.status_code == 200:
+                    lines.append(f'#EXTINF:-1 tvg-id="" tvg-name="Golvar2693 Stream {idx}",Golvar2693 Stream {idx}')
+                    lines.append(f'#EXTVLCOPT:http-user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+                    lines.append(f'#EXTVLCOPT:http-referrer=https://golvar2693.sbs/')
+                    lines.append(stream_url)
+                    print_status(f"{idx:02d}. Golvar2693 Stream {idx}", "success")
+                    valid_count += 1
+            except:
+                continue
+        
+        playlist = "\n".join(lines) if valid_count > 0 else None
+    
+    if not playlist or valid_count == 0:
+        print_status("Hiçbir stream bulunamadı!", "error")
         sys.exit(1)
     
     # Dosyaya yaz
@@ -193,7 +245,7 @@ def main():
         with open(filename, "w", encoding="utf-8") as f:
             f.write(playlist)
         print_status(f"Playlist oluşturuldu: {filename}", "success")
-        print_status(f"Aktif kanal sayısı: {valid_count}", "success")
+        print_status(f"Aktif stream sayısı: {valid_count}", "success")
         
     except Exception as e:
         print_status(f"Dosya yazılırken hata: {e}", "error")
@@ -201,7 +253,7 @@ def main():
     
     print(f"\n{CYAN}{BOLD}╔══════════════════════════════════════════╗")
     print(f"║            İŞLEM TAMAMLANDI              ║")
-    print(f"║   Aktif Kanal: {valid_count:2d}                         ║")
+    print(f"║   Aktif Stream: {valid_count:2d}                       ║")
     print(f"╚══════════════════════════════════════════╝{RESET}")
 
 if __name__ == "__main__":
