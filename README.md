@@ -1,20 +1,38 @@
-# SSC Sports Stream Scraper
+# Golvar2693 IPTV M3U Generator
 
-Bu bot, elahmad.com sitesindeki SSC Sports kanallarının yayın linklerini otomatik olarak çıkarır ve M3U playlist oluşturur.
+Bu GitHub botu, golvar2693.sbs sitesindeki canlı yayınları otomatik olarak çeker ve M3U playlist dosyası oluşturur.
 
 ## Özellikler
 
-- SSC Sports 1, SSC Sports 2 ve diğer kanalları otomatik tespit eder
-- M3U8 stream linklerini çıkarır
-- Günlük otomatik güncelleme
-- GitHub Pages üzerinden erişim
+- 🤖 Otomatik kanal tarama
+- 🔄 6 saatte bir otomatik güncelleme
+- ✅ Aktif kanal kontrolü
+- 📺 24+ spor kanalı
+- 🎯 VLC ve IPTV uyumlu
 
 ## Kullanım
 
-Playlist linki: `https://[kullanici-adi].github.io/[repo-adi]/ssc_sports.m3u`
+1. Oluşturulan `golvar2693.m3u` dosyasını indirin
+2. VLC Player veya IPTV uygulamanızda açın
+3. Canlı yayınları izlemeye başlayın
 
-## Yerel Çalıştırma
+## Otomatik Güncelleme
 
-```bash
-pip install -r requirements.txt
-python ssc_scraper.py
+Playlist otomatik olarak güncellenir:
+- Her 6 saatte bir
+- Manuel tetikleme ile
+- Repository güncellemelerinde
+
+## Kanal Listesi
+
+- Bein Sports 1-5 HD
+- Bein Max 1-2 HD  
+- S Sport 1-2 HD
+- Tivibu Spor 1-3 HD
+- TRT Spor HD
+- A Spor HD
+- ve daha fazlası...
+
+## Not
+
+Bu bot eğitim amaçlıdır. Lütfen yerel yasalarınıza uygun şekilde kullanın.
