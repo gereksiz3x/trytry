@@ -1,0 +1,35 @@
+name: Fetch RBTVPlus Streams
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Her gün gece yarısı
+  workflow_dispatch:  # Manuel çalıştırma için
+
+jobs:
+  fetch-streams:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests m3u8
+        
+    - name: Run stream fetcher
+      run: python rbtvplus_recorder.py
+      
+    - name: Commit and push if changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add *.m3u
+        git commit -m "Update RBTVPlus streams - $(date)" || echo "No changes to commit"
+        git push
