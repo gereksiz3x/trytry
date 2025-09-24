@@ -1,8 +1,6 @@
 name: Daily Stream Scraper
 
 on:
-  schedule:
-    - cron: '0 6,12,18 * * *'
   workflow_dispatch:
 
 jobs:
@@ -18,124 +16,62 @@ jobs:
       with:
         python-version: '3.9'
         
-    - name: Install dependencies
+    - name: Generate M3U file
       run: |
-        python -m pip install --upgrade pip
-        pip install requests beautifulsoup4 lxml
-        
-    - name: Create or update main.py
-      run: |
-        cat > main.py << 'EOF'
+        cat > generate_streams.py << 'EOF'
 import json
 from datetime import datetime
 
-def main():
-    print("🚀 Creating M3U playlist with real streams...")
-    
-    # Gerçek M3U8 stream verisi
-    streams_data = {
-        "Getafe vs Deportivo - La Liga": {
-            "match_info": {
-                "name": "Getafe vs Deportivo - La Liga",
-                "time": "20:00",
-                "teams": {"home": "Getafe", "away": "Deportivo"},
-                "league": "LA LIGA"
-            },
+# Create sample data with REAL M3U8 links
+data = {
+    "matches": [
+        {
+            "name": "Getafe vs Deportivo",
+            "time": "20:00",
+            "league": "La Liga",
             "streams": [
                 {
-                    "name": "ESPN+ HD Stream",
+                    "name": "ESPN+ HD",
                     "url": "https://14c51.crackstreamslivehd.com/espnplus1/tracks-v1a1/mono.m3u8?ip=95.14.10.17&token=96496ea3beb2aaacc06d36cbb9de3d25a3f6e4d8-a3-1758784419-1758730419",
-                    "quality": "HD",
-                    "language": "İspanyolca"
+                    "quality": "HD"
                 }
-            ],
-            "last_updated": datetime.now().isoformat()
-        },
-        "Galatasaray vs Fenerbahçe - Süper Lig": {
-            "match_info": {
-                "name": "Galatasaray vs Fenerbahçe - Süper Lig",
-                "time": "19:00",
-                "teams": {"home": "Galatasaray", "away": "Fenerbahçe"},
-                "league": "SÜPER LİG"
-            },
-            "streams": [
-                {
-                    "name": "BeIN Sports HD",
-                    "url": "https://example.com/stream1.m3u8",
-                    "quality": "HD",
-                    "language": "Türkçe"
-                },
-                {
-                    "name": "TRT Spor HD", 
-                    "url": "https://example.com/stream2.m3u8",
-                    "quality": "HD",
-                    "language": "Türkçe"
-                }
-            ],
-            "last_updated": datetime.now().isoformat()
-        },
-        "Real Madrid vs Barcelona - La Liga": {
-            "match_info": {
-                "name": "Real Madrid vs Barcelona - La Liga",
-                "time": "22:00", 
-                "teams": {"home": "Real Madrid", "away": "Barcelona"},
-                "league": "LA LIGA"
-            },
-            "streams": [
-                {
-                    "name": "LaLiga TV HD",
-                    "url": "https://example.com/stream3.m3u8",
-                    "quality": "HD", 
-                    "language": "İspanyolca"
-                }
-            ],
-            "last_updated": datetime.now().isoformat()
+            ]
         }
-    }
-    
-    # JSON dosyasını kaydet
-    with open('streams_data.json', 'w', encoding='utf-8') as f:
-        json.dump(streams_data, f, ensure_ascii=False, indent=2)
-    print("✅ streams_data.json created")
-    
-    # M3U dosyasını oluştur
-    m3u_content = ["#EXTM3U"]
-    
-    for match_name, data in streams_data.items():
-        for stream in data["streams"]:
-            title = f"{data['match_info']['teams']['home']} vs {data['match_info']['teams']['away']} - {stream['quality']}"
-            if stream['language'] != 'Unknown':
-                title += f" [{stream['language']}]"
-            
-            m3u_content.append(f"#EXTINF:-1,{title}")
-            m3u_content.append(stream['url'])
-    
-    with open('streams.m3u', 'w', encoding='utf-8') as f:
-        f.write('\n'.join(m3u_content))
-    print("✅ streams.m3u created")
-    
-    # Sonuçları göster
-    total_matches = len(streams_data)
-    total_streams = sum(len(data['streams']) for data in streams_data.values())
-    
-    print(f"📊 Total matches: {total_matches}")
-    print(f"📺 Total streams: {total_streams}")
-    print("🎯 M3U file is ready to use!")
+    ],
+    "generated_at": datetime.now().isoformat()
+}
 
-if __name__ == "__main__":
-    main()
+# Save JSON
+with open('streams_data.json', 'w') as f:
+    json.dump(data, f, indent=2)
+
+# Create M3U
+m3u_content = """#EXTM3U
+#EXTINF:-1,Getafe vs Deportivo - HD
+https://14c51.crackstreamslivehd.com/espnplus1/tracks-v1a1/mono.m3u8?ip=95.14.10.17&token=96496ea3beb2aaacc06d36cbb9de3d25a3f6e4d8-a3-1758784419-1758730419
+#EXTINF:-1,Galatasaray vs Fenerbahce - HD
+https://example.com/stream2.m3u8"""
+
+with open('streams.m3u', 'w') as f:
+    f.write(m3u_content)
+
+print("Files generated successfully!")
 EOF
         
-    - name: Run the scraper
-      run: python main.py
+        python generate_streams.py
         
-    - name: Display results
+    - name: Show files
       run: |
-        echo "=== GENERATED FILES ==="
-        ls -la *.json *.m3u 2>/dev/null || echo "No files found"
-        echo ""
-        echo "=== M3U FILE CONTENT ==="
+        echo "=== FILES ==="
+        ls -la
+        echo "=== M3U CONTENT ==="
         cat streams.m3u
-        echo ""
-        echo "=== JSON FILE PREVIEW ==="
-        head -30 streams_data.json
+        
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: stream-files
+        path: |
+          streams.m3u
+          streams_data.json
+        retention-days: 30
