@@ -2,9 +2,10 @@ name: Daily Stream Scraper
 
 on:
   schedule:
-    # Her gün UTC 06:00, 12:00, 18:00'de çalışır (Türkiye saatiyle 09:00, 15:00, 21:00)
     - cron: '0 6,12,18 * * *'
-  workflow_dispatch:  # Manuel çalıştırma için
+  workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   scrape:
@@ -25,13 +26,24 @@ jobs:
         pip install -r requirements.txt
         
     - name: Run scraper
+      run: python main.py
+        
+    - name: List generated files
+      run: ls -la
+      
+    - name: Check M3U file content
       run: |
-        python main.py
+        if [ -f streams.m3u ]; then
+          echo "M3U File Content:"
+          head -20 streams.m3u
+        else
+          echo "M3U file not found"
+        fi
         
     - name: Commit and push if changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        git add streams_data.json
-        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update stream data"
+        git add streams_data.json streams.m3u
+        git diff --quiet && git diff --staged --quiet || git commit -m "Auto-update: M3U streams playlist"
         git push
