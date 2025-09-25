@@ -9,49 +9,46 @@ def fetch_golvar3450():
     }
     
     try:
+        print("Sayfa çekiliyor...")
         response = requests.get(url, headers=headers)
         response.raise_for_status()
+        print("Sayfa başarıyla çekildi")
     except Exception as e:
         print("Hata: Sayfa çekilemedi.", e)
-        return
+        return False
 
-    # Örnek: Yayın linklerini bulmak için regex (site yapısına göre ayarlanmalı)
-    pattern = r'https?://[^\s"<>]+\.m3u8?[^\s"<>]*'
+    # Hata ayıklama için içeriği kontrol et
+    print(f"Sayfa uzunluğu: {len(response.text)} karakter")
+    
+    # Daha geniş bir regex pattern'i deneyelim
+    pattern = r'https?://[^\s"<>]+\.(m3u8|ts|mp4)[^\s"<>]*'
     streams = re.findall(pattern, response.text)
-
+    
+    print(f"Bulunan stream sayısı: {len(streams)}")
+    
     if not streams:
-        print("Yayın bulunamadı.")
-        return
+        print("Yayın bulunamadı. Sayfanın bir kısmını gösteriyorum:")
+        print(response.text[:1000])  # İlk 1000 karakteri göster
+        return False
 
     # M3U playlist başlığı
     m3u_content = "#EXTM3U\n"
-    m3u_content += f"#EXT-X-VERSION:3\n"
-    m3u_content += f"#PLAYLIST: Golvar3450 IPTV\n"
-    m3u_content += f"#EXTENC:UTF-8\n"
-    m3u_content += f"#EXT-X-TARGETDURATION:10\n"
-    m3u_content += f"#EXT-X-MEDIA-SEQUENCE:1\n"
-    m3u_content += f"#EXT-X-PLAYLIST-TYPE:VOD\n"
-    m3u_content += f"#EXT-X-INDEPENDENT-SEGMENTS\n"
-    m3u_content += f"#EXT-X-PROGRAM-DATE-TIME:{datetime.now().strftime('%Y-%m-%dT%H:%M:%SZ')}\n"
-
-    # Kanal isimlerini çekmek için örnek regex (siteye göre uyarla)
-    channel_pattern = r'<div class="channel">(.*?)</div>'
-    channels = re.findall(channel_pattern, response.text, re.DOTALL)
-
-    for i, stream_url in enumerate(streams):
+    
+    for i, stream_url in enumerate(streams[:50]):  # İlk 50 stream ile sınırla
         channel_name = f"Golvar3450 Kanal {i+1}"
-        if i < len(channels):
-            # Temizleme ve düzenleme
-            channel_name = re.sub(r'<[^>]+>', '', channels[i]).strip()[:50]
         
         m3u_content += f'#EXTINF:-1 tvg-id="golvar{i+1}" tvg-name="{channel_name}" group-title="Golvar3450",{channel_name}\n'
         m3u_content += stream_url + "\n"
 
     # Dosyaya yaz
-    with open("golvar3450.m3u", "w", encoding="utf-8") as f:
-        f.write(m3u_content)
-
-    print("golvar3450.m3u oluşturuldu.")
+    try:
+        with open("golvar3450.m3u", "w", encoding="utf-8") as f:
+            f.write(m3u_content)
+        print("golvar3450.m3u başarıyla oluşturuldu.")
+        return True
+    except Exception as e:
+        print("Dosya yazma hatası:", e)
+        return False
 
 if __name__ == "__main__":
     fetch_golvar3450()
