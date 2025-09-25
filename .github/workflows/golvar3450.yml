@@ -25,6 +25,16 @@ jobs:
         run: |
           python golvar3450.py
 
+      - name: Dosya Kontrolü Yap
+        run: |
+          if [ -f "golvar3450.m3u" ]; then
+            echo "M3U dosyası oluşturuldu"
+            ls -la golvar3450.m3u
+          else
+            echo "M3U dosyası oluşturulamadı"
+            exit 1
+          fi
+
       - name: Playlist'i Commit Et
         run: |
           git config --global user.name "github-actions[bot]"
