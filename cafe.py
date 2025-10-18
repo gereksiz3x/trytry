@@ -1,95 +1,178 @@
 import requests
 import re
+import os
+import time
+from urllib.parse import urlparse
 
-HEADERS = {"User-Agent": "Mozilla/5.0"}
+def find_working_sporcafe(start=5, end=20):
+    print("🧭 sporcafe domainleri taranıyor...")
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
-CHANNELS = [
-    {"id": "bein1", "source_id": "sbeinsports-1", "name": "BeIN Sports 1", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/5rhmw31628798883.png", "group": "Spor"},
-    {"id": "bein2", "source_id": "sbeinsports-2", "name": "BeIN Sports 2", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/7uv6x71628799003.png", "group": "Spor"},
-    {"id": "bein3", "source_id": "sbeinsports-3", "name": "BeIN Sports 3", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/u3117i1628798857.png", "group": "Spor"},
-    {"id": "bein4", "source_id": "sbeinsports-4", "name": "BeIN Sports 4", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/2ktmcp1628798841.png", "group": "Spor"},
-    {"id": "bein5", "source_id": "sbeinsports-5", "name": "BeIN Sports 5", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/BeIn_Sports_5_US.png", "group": "Spor"},
-    {"id": "beinmax1", "source_id": "sbeinsportsmax-1", "name": "BeIN Sports Max 1", "logo": "https://assets.bein.com/mena/sites/3/2015/06/beIN_SPORTS_MAX1_DIGITAL_Mono.png", "group": "Spor"},
-    {"id": "beinmax2", "source_id": "sbeinsportsmax-2", "name": "BeIN Sports Max 2", "logo": "http://tvprofil.com/img/kanali-logo/beIN_Sports_MAX_2_TR_logo_v2.png?1734011568", "group": "Spor"},
-    {"id": "tivibu1", "source_id": "stivibuspor-1", "name": "Tivibu Spor 1", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/qadnsi1642604437.png", "group": "Spor"},
-    {"id": "tivibu2", "source_id": "stivibuspor-2", "name": "Tivibu Spor 2", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/kuasdm1642604455.png", "group": "Spor"},
-    {"id": "tivibu3", "source_id": "stivibuspor-3", "name": "Tivibu Spor 3", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/slwrz41642604502.png", "group": "Spor"},
-    {"id": "tivibu4", "source_id": "stivibuspor-4", "name": "Tivibu Spor 4", "logo": "https://r2.thesportsdb.com/images/media/channel/logo/59bqi81642604517.png", "group": "Spor"},
-    {"id": "ssport1", "source_id": "sssport", "name": "S Sport 1", "logo": "https://itv224226.tmp.tivibu.com.tr:6430/images/poster/20230302923239.png", "group": "Spor"},
-    {"id": "ssport2", "source_id": "sssport2", "name": "S Sport 2", "logo": "https://itv224226.tmp.tivibu.com.tr:6430/images/poster/20230302923321.png", "group": "Spor"},
-    {"id": "smart1", "source_id": "ssmartspor", "name": "Smart Spor 1", "logo": "https://dsmart-static-v2.ercdn.net//resize-width/1920/content/p/el/11909/Thumbnail.png", "group": "Spor"},
-    {"id": "smart2", "source_id": "ssmartspor2", "name": "Smart Spor 2", "logo": "https://www.dsmart.com.tr/api/v1/public/images/kanallar/SPORSMART2-gri.png", "group": "Spor"},
-    {"id": "aspor", "source_id": "saspor", "name": "A Spor", "logo": "https://feo.kablowebtv.com/resize/168A635D265A4328C2883FB4CD8FF/0/0/Vod/HLS/9d28401f-2d4e-4862-85e2-69773f6f45f4.png", "group": "Spor"},
-    {"id": "eurosport1", "source_id": "seurosport1", "name": "Eurosport 1", "logo": "https://feo.kablowebtv.com/resize/168A635D265A4328C2883FB4CD8FF/0/0/Vod/HLS/54cad412-5f3a-4184-b5fc-d567a5de7160.png", "group": "Spor"},
-    {"id": "eurosport2", "source_id": "seurosport2", "name": "Eurosport 2", "logo": "https://feo.kablowebtv.com/resize/168A635D265A4328C2883FB4CD8FF/0/0/Vod/HLS/a4cbdd15-1509-408f-a108-65b8f88f2066.png", "group": "Spor"},
-]
-
-def find_working_domain(start=6, end=100):
-    print("sporcafe domainleri taranıyor...")
     for i in range(start, end + 1):
-        url = f"https://www.sporcafe-{i}.com/"
-        try:
-            res = requests.get(url, headers=HEADERS, timeout=5)
-            if res.status_code == 200 and "uxsyplayer" in res.text:
-                print(f"Aktif domain: {url}")
-                return res.text, url
-        except:
-            continue
-    print(" Aktif domain bulunamadı.")
+        url = f"https://www.sporcafe-2fd65c4bc314.xyz/"
+        alt_url = f"https://www.sporcafe-2fd65c4bc314.xyz/"
+        
+        for test_url in [url, alt_url]:
+            print(f"🔍 Taranıyor: {test_url}")
+            try:
+                response = requests.get(test_url, headers=headers, timeout=10)
+                if response.status_code == 200 and "uxsyplayer" in response.text:
+                    print(f"✅ Aktif domain bulundu: {test_url}")
+                    return response.text, test_url
+                time.sleep(1)  # Rate limiting
+            except Exception as e:
+                print(f"⚠️ Hata {test_url}: {e}")
+                continue
+
+    print("❌ Aktif domain bulunamadı.")
     return None, None
 
-def find_stream_domain(html):
-    match = re.search(r'https?://(main\.uxsyplayer[0-9a-zA-Z\-]+\.click)', html)
-    return f"https://{match.group(1)}" if match else None
-
-def extract_base_url(html):
-    match = re.search(r'this\.adsBaseUrl\s*=\s*[\'"]([^\'"]+)', html)
-    return match.group(1) if match else None
-
-def fetch_streams(domain, referer):
-    result = []
-    for ch in CHANNELS:
-        full_url = f"{domain}/index.php?id={ch['source_id']}"
-        try:
-            r = requests.get(full_url, headers={**HEADERS, "Referer": referer}, timeout=5)
-            if r.status_code == 200:
-                base = extract_base_url(r.text)
-                if base:
-                    stream = f"{base}{ch['source_id']}/playlist.m3u8"
-                    print(f" {ch['name']} → {stream}")
-                    result.append((ch, stream))
-        except Exception as e:
-            print(f" Hata ({ch['name']}): {e}")
-    return result
-
-def write_m3u(links, filename="cafe.m3u", referer=""):
-    print(f"\n M3U dosyası yazılıyor: {filename}")
-    lines = ["#EXTM3U"]
-    for ch, url in links:
-        lines.append(f'#EXTINF:-1 tvg-id="{ch["id"]}" tvg-name="{ch["name"]}" tvg-logo="{ch["logo"]}" group-title="{ch["group"]}",{ch["name"]}')
-        if referer:
-            lines.append(f"#EXTVLCOPT:http-referrer={referer}")
-        lines.append(url)
+def find_dynamic_player_domain(page_html):
+    patterns = [
+        r'https?://(main\.uxsyplayer[0-9a-zA-Z\-]+\.click)',
+        r'https?://(main\.uxsyplayer[0-9a-zA-Z\-]+\.stream)',
+        r'https?://(main\.uxsyplayer[0-9a-zA-Z\-]+\.live)'
+    ]
     
-    with open(filename, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
-    print(f" Tamamlandı. Kanal sayısı: {len(links)}")
-    print(f" Dosya konumu: {filename}")
+    for pattern in patterns:
+        match = re.search(pattern, page_html)
+        if match:
+            return f"https://{match.group(1)}"
+    return None
 
-def main():
-    html, referer = find_working_domain()
-    if not html:
-        return
-    stream_domain = find_stream_domain(html)
-    if not stream_domain:
-        print(" Yayın domaini bulunamadı.")
-        return
-    print(f" Yayın domaini: {stream_domain}")
-    streams = fetch_streams(stream_domain, referer)
-    if streams:
-        write_m3u(streams, referer=referer)
-    else:
-        print("Hiçbir yayın alınamadı.")
+def extract_base_stream_url(html):
+    patterns = [
+        r'this\.adsBaseUrl\s*=\s*[\'"]([^\'"]+)',
+        r'baseStreamUrl\s*=\s*[\'"]([^\'"]+)',
+        r'streamUrl\s*=\s*[\'"]([^\'"]+)'
+    ]
+    
+    for pattern in patterns:
+        match = re.search(pattern, html)
+        if match:
+            return match.group(1)
+    return None
+
+def build_m3u8_links(stream_domain, referer, channel_ids):
+    m3u8_links = []
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+        "Referer": referer,
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+    }
+
+    for cid in channel_ids:
+        try:
+            url = f"{stream_domain}/index.php?id={cid}"
+            print(f"🔗 Deneniyor: {cid}")
+            response = requests.get(url, headers=headers, timeout=10)
+            if response.status_code == 200:
+                base_url = extract_base_stream_url(response.text)
+                if base_url:
+                    # Base URL'yi temizle ve düzelt
+                    base_url = base_url.rstrip('/')
+                    full_url = f"{base_url}/{cid}/playlist.m3u8"
+                    print(f"✅ {cid} için M3U8 bulundu: {full_url}")
+                    m3u8_links.append((cid, full_url))
+                else:
+                    print(f"❌ baseStreamUrl alınamadı: {cid}")
+            else:
+                print(f"❌ HTTP {response.status_code}: {cid}")
+        except Exception as e:
+            print(f"⚠️ Hata ({cid}): {e}")
+    
+    return m3u8_links
+
+def create_backup(filename="1.m3u"):
+    """Dosya yedegi olustur"""
+    if os.path.exists(filename):
+        backup_name = f"{filename}.backup"
+        try:
+            with open(filename, 'r', encoding='utf-8') as original:
+                with open(backup_name, 'w', encoding='utf-8') as backup:
+                    backup.write(original.read())
+            print(f"📦 Yedek oluşturuldu: {backup_name}")
+        except Exception as e:
+            print(f"⚠️ Yedek oluşturma hatası: {e}")
+
+def write_m3u_file(m3u8_links, filename="1.m3u", referer=""):
+    if not m3u8_links:
+        print("❌ Güncelleme yapılamadı: M3U8 linkleri bulunamadı")
+        return False
+
+    # Önce yedek oluştur
+    create_backup(filename)
+    
+    # M3U başlığı
+    m3u_content = ['#EXTM3U x-tvg-url="https://raw.githubusercontent.com/freebouquet/epg/main/guide.xml"']
+    
+    # Kanal bilgileri
+    channel_info = {
+        "sbeinsports-1": ("beIN Sports 1", "beinsports1.png"),
+        "sbeinsports-2": ("beIN Sports 2", "beinsports2.png"),
+        "sbeinsports-3": ("beIN Sports 3", "beinsports3.png"),
+        "sbeinsports-4": ("beIN Sports 4", "beinsports4.png"),
+        "sbeinsports-5": ("beIN Sports 5", "beinsports5.png"),
+        "sbeinsportsmax-1": ("beIN Sports Max 1", "beinsportsmax1.png"),
+        "sbeinsportsmax-2": ("beIN Sports Max 2", "beinsportsmax2.png"),
+        "sssport": ("S Sport", "ssport.png"),
+        "sssport2": ("S Sport 2", "ssport2.png"),
+        # Diğer kanallar için benzer şekilde ekleyin...
+    }
+
+    for cid, m3u8_url in m3u8_links:
+        channel_name, logo = channel_info.get(cid, (cid, ""))
+        
+        m3u_content.extend([
+            f'#EXTINF:-1 tvg-id="{cid}" tvg-name="{channel_name}" tvg-logo="{logo}" group-title="SPOR",{channel_name}',
+            f'#EXTVLCOPT:http-referrer={referer}',
+            m3u8_url,
+            ''
+        ])
+
+    try:
+        with open(filename, "w", encoding="utf-8") as f:
+            f.write("\n".join(m3u_content))
+        print(f"✅ M3U dosyası güncellendi: {filename}")
+        print(f"📊 Toplam {len(m3u8_links)} kanal eklendi")
+        return True
+    except Exception as e:
+        print(f"❌ Dosya yazma hatası: {e}")
+        return False
+
+# Kanal ID'leri
+channel_ids = [
+    "sbeinsports-1", "sbeinsports-2", "sbeinsports-3", "sbeinsports-4", "sbeinsports-5",
+    "sbeinsportsmax-1", "sbeinsportsmax-2", "sssport", "sssport2", "ssmartspor", 
+    "ssmartspor2", "stivibuspor-1", "stivibuspor-2", "stivibuspor-3", "stivibuspor-4",
+    "sbeinsportshaber", "saspor", "seurosport1", "seurosport2", "sf1", "stabiispor", "sssportplus1"
+]
 
 if __name__ == "__main__":
-    main()
+    print("🚀 Spor Cafe M3U Güncelleyici Başlatıldı")
+    print("=" * 50)
+    
+    html, referer_url = find_working_sporcafe()
+
+    if html and referer_url:
+        print(f"🌐 Referer: {referer_url}")
+        stream_domain = find_dynamic_player_domain(html)
+        
+        if stream_domain:
+            print(f"🔗 Yayın domaini: {stream_domain}")
+            m3u8_list = build_m3u8_links(stream_domain, referer_url, channel_ids)
+            
+            if m3u8_list:
+                success = write_m3u_file(m3u8_list, referer=referer_url)
+                if success:
+                    print("🎉 İşlem başarıyla tamamlandı!")
+                else:
+                    print("💥 M3U dosyası oluşturulamadı!")
+            else:
+                print("❌ Hiçbir yayın linki oluşturulamadı.")
+        else:
+            print("❌ Yayın domaini bulunamadı.")
+    else:
+        print("⛔ Aktif yayın alınamadı.")
+    
+    print("=" * 50)
