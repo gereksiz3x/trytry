@@ -27,7 +27,7 @@ CHANNELS = [
 def find_working_domain(start=6, end=100):
     print("sporcafe domainleri taranıyor...")
     for i in range(start, end + 1):
-        url = f"https://www.sporcafe{i}.xyz/"
+        url = f"https://www.sporcafe-2fd65c4bc314.xyz//"
         try:
             res = requests.get(url, headers=HEADERS, timeout=5)
             if res.status_code == 200 and "uxsyplayer" in res.text:
