@@ -11,7 +11,6 @@ def find_working_sporcafe(start=5, end=20):
     for i in range(start, end + 1):
         url = f"https://www.sporcafe-2fd65c4bc314.xyz/"
         alt_url = f"https://www.sporcafe-2fd65c4bc314.xyz/"
-        
         for test_url in [url, alt_url]:
             print(f"🔍 Taranıyor: {test_url}")
             try:
@@ -117,7 +116,19 @@ def write_m3u_file(m3u8_links, filename="1.m3u", referer=""):
         "sbeinsportsmax-2": ("beIN Sports Max 2", "beinsportsmax2.png"),
         "sssport": ("S Sport", "ssport.png"),
         "sssport2": ("S Sport 2", "ssport2.png"),
-        # Diğer kanallar için benzer şekilde ekleyin...
+        "ssmartspor": ("Smart Spor", "smartspor.png"),
+        "ssmartspor2": ("Smart Spor 2", "smartspor2.png"),
+        "stivibuspor-1": ("Tivibu Spor 1", "tivibuspor1.png"),
+        "stivibuspor-2": ("Tivibu Spor 2", "tivibuspor2.png"),
+        "stivibuspor-3": ("Tivibu Spor 3", "tivibuspor3.png"),
+        "stivibuspor-4": ("Tivibu Spor 4", "tivibuspor4.png"),
+        "sbeinsportshaber": ("beIN Sports Haber", "beinsportshaber.png"),
+        "saspor": ("A Spor", "aspor.png"),
+        "seurosport1": ("EuroSport 1", "eurosport1.png"),
+        "seurosport2": ("EuroSport 2", "eurosport2.png"),
+        "sf1": ("F1", "f1.png"),
+        "stabiispor": ("Tabii Spor", "tabiispor.png"),
+        "sssportplus1": ("S Sport Plus 1", "ssportplus1.png")
     }
 
     for cid, m3u8_url in m3u8_links:
@@ -135,6 +146,10 @@ def write_m3u_file(m3u8_links, filename="1.m3u", referer=""):
             f.write("\n".join(m3u_content))
         print(f"✅ M3U dosyası güncellendi: {filename}")
         print(f"📊 Toplam {len(m3u8_links)} kanal eklendi")
+        
+        # Dosya yolunu da yazdır
+        full_path = os.path.abspath(filename)
+        print(f"📁 Tam dosya yolu: {full_path}")
         return True
     except Exception as e:
         print(f"❌ Dosya yazma hatası: {e}")
@@ -152,6 +167,10 @@ if __name__ == "__main__":
     print("🚀 Spor Cafe M3U Güncelleyici Başlatıldı")
     print("=" * 50)
     
+    # Mevcut dizini kontrol et
+    current_dir = os.getcwd()
+    print(f"📁 Mevcut çalışma dizini: {current_dir}")
+    
     html, referer_url = find_working_sporcafe()
 
     if html and referer_url:
@@ -166,6 +185,13 @@ if __name__ == "__main__":
                 success = write_m3u_file(m3u8_list, referer=referer_url)
                 if success:
                     print("🎉 İşlem başarıyla tamamlandı!")
+                    
+                    # Dosya kontrolü
+                    if os.path.exists("1.m3u"):
+                        file_size = os.path.getsize("1.m3u")
+                        print(f"📄 Oluşturulan dosya: 1.m3u ({file_size} bytes)")
+                    else:
+                        print("❌ Dosya oluşturulamadı!")
                 else:
                     print("💥 M3U dosyası oluşturulamadı!")
             else:
