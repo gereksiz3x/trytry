@@ -27,7 +27,7 @@ CHANNELS = [
 def find_working_domain(start=6, end=100):
     print("sporcafe domainleri taranıyor...")
     for i in range(start, end + 1):
-        url = f"https://www.sporcafe-2fd65c4bc314.xyz//"
+        url = f"https://www.sporcafe-{i}.com/"
         try:
             res = requests.get(url, headers=HEADERS, timeout=5)
             if res.status_code == 200 and "uxsyplayer" in res.text:
@@ -58,8 +58,8 @@ def fetch_streams(domain, referer):
                     stream = f"{base}{ch['source_id']}/playlist.m3u8"
                     print(f" {ch['name']} → {stream}")
                     result.append((ch, stream))
-        except:
-            pass
+        except Exception as e:
+            print(f" Hata ({ch['name']}): {e}")
     return result
 
 def write_m3u(links, filename="cafe.m3u", referer=""):
@@ -67,11 +67,14 @@ def write_m3u(links, filename="cafe.m3u", referer=""):
     lines = ["#EXTM3U"]
     for ch, url in links:
         lines.append(f'#EXTINF:-1 tvg-id="{ch["id"]}" tvg-name="{ch["name"]}" tvg-logo="{ch["logo"]}" group-title="{ch["group"]}",{ch["name"]}')
-        lines.append(f"#EXTVLCOPT:http-referrer={referer}")
+        if referer:
+            lines.append(f"#EXTVLCOPT:http-referrer={referer}")
         lines.append(url)
+    
     with open(filename, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
-    print(" Tamamlandı. Kanal sayısı:", len(links))
+    print(f" Tamamlandı. Kanal sayısı: {len(links)}")
+    print(f" Dosya konumu: {filename}")
 
 def main():
     html, referer = find_working_domain()
