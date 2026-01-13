@@ -1,8 +1,4 @@
 #EXTM3U x-tvg-url="https://raw.githubusercontent.com/freebouquet/epg/main/guide.xml"
-#EXTINF:-1 tvg-id="sbeinsports-1" tvg-name="beIN Sports 1" tvg-logo="beinsports1.png" group-title="SPOR",beIN Sports 1
-#EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
-https://dga1op10s1u3leo.38f3bb9511487c.click/live/sbeinsports-1/playlist.m3u8
-
 #EXTINF:-1 tvg-id="sbeinsports-2" tvg-name="beIN Sports 2" tvg-logo="beinsports2.png" group-title="SPOR",beIN Sports 2
 #EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
 https://dga1op10s1u3leo.38f3bb9511487c.click/live/sbeinsports-2/playlist.m3u8
@@ -10,10 +6,6 @@ https://dga1op10s1u3leo.38f3bb9511487c.click/live/sbeinsports-2/playlist.m3u8
 #EXTINF:-1 tvg-id="sbeinsports-3" tvg-name="beIN Sports 3" tvg-logo="beinsports3.png" group-title="SPOR",beIN Sports 3
 #EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
 https://dga1op10s1u3leo.38f3bb9511487c.click/live/sbeinsports-3/playlist.m3u8
-
-#EXTINF:-1 tvg-id="sbeinsports-4" tvg-name="beIN Sports 4" tvg-logo="beinsports4.png" group-title="SPOR",beIN Sports 4
-#EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
-https://dga1op10s1u3leo.38f3bb9511487c.click/live/sbeinsports-4/playlist.m3u8
 
 #EXTINF:-1 tvg-id="sbeinsports-5" tvg-name="beIN Sports 5" tvg-logo="beinsports5.png" group-title="SPOR",beIN Sports 5
 #EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
