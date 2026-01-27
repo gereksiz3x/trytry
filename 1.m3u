@@ -71,14 +71,6 @@ https://dga1op10s1u3leo.ee086cf9635f72.click/live/saspor/playlist.m3u8
 #EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
 https://dga1op10s1u3leo.ee086cf9635f72.click/live/seurosport1/playlist.m3u8
 
-#EXTINF:-1 tvg-id="seurosport2" tvg-name="EuroSport 2" tvg-logo="eurosport2.png" group-title="SPOR",EuroSport 2
-#EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
-https://dga1op10s1u3leo.ee086cf9635f72.click/live/seurosport2/playlist.m3u8
-
-#EXTINF:-1 tvg-id="sf1" tvg-name="F1" tvg-logo="f1.png" group-title="SPOR",F1
-#EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
-https://dga1op10s1u3leo.ee086cf9635f72.click/live/sf1/playlist.m3u8
-
 #EXTINF:-1 tvg-id="stabiispor" tvg-name="Tabii Spor" tvg-logo="tabiispor.png" group-title="SPOR",Tabii Spor
 #EXTVLCOPT:http-referrer=https://www.sporcafe-2fd65c4bc314.xyz/
 https://dga1op10s1u3leo.ee086cf9635f72.click/live/stabiispor/playlist.m3u8
